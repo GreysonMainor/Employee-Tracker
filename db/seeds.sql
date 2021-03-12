@@ -11,7 +11,7 @@ INSERT INTO role (title, salary, department_id) VALUE ("Accountant", 100000, 3);
 INSERT INTO role (title, salary, department_id) VALUE ("Sales Lead", 90000, 1);
 INSERT INTO role (title, salary, department_id) VALUE ("Salesperson", 70000, 1);
 INSERT INTO role (title, salary, department_id) VALUE ("Legal Team Lead", 115000, 4);
-INSERT INTO role (title, salary, department_id) VALUE ("Lawyer", 145000, 4) 
+INSERT INTO role (title, salary, department_id) VALUE ("Lawyer", 145000, 4); 
 
 -- Employee Seeds --
 INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUE ("John", "Doe", 1, 1);
