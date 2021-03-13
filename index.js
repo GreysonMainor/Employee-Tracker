@@ -70,19 +70,48 @@ function viewEmployees() {
 
 
 function viewRoles() {
-
+    connection.query("SELECT * FROM role", function(err, res) {
+      if (err) throw err;
+      console.table(res);
+      prompt();
+    });
 }
 
 function viewDepartments() {
-
+    connection.query( "SELECT * FROM department", function(err, res) {
+      if (err) throw err;
+      console.table(res);
+      prompt();
+    });
 }
-
 function updateEmployee() {
 
 }
 
 function addRole() {
-
+    inquirer.prompt([
+      {
+        type: "input",
+        message: "What's the name of the role?",
+        name: "newRole"
+      },
+      {
+        type: "input",
+        message: "What is the salary for this role?",
+        name: "newSalary"
+      },
+      {
+        type: "input",
+        message: "What is the department id number?",
+        name: "newDept"
+      }
+    ]).then(function(data) {
+      connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [data.newRole, data.newSalary, data.newDept], function(err, res) {
+        if (err) throw err;
+        console.table(res);
+        prompt();
+      });
+    });
 }
 
 function addEmployee() {
@@ -118,5 +147,16 @@ function addEmployee() {
 }
 
 function addDepartment() {
+    inquirer.prompt({
+        type: "input",
+        message: "What is the name of the department?",
+        name: "newDept"
+    }).then(function(data){
+        connection.query("INSERT INTO department (name) VALUES (?)", [data.newDept] , function(err, res) {
+            if (err) throw err;
+            console.table(res);
+            prompt();
+    });
+    });
 
 }
