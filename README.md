@@ -1,7 +1,7 @@
 # Employee-Tracker
 
 ## Media links:
-![Walk-through](<iframe src="https://drive.google.com/file/d/1NtRMy8lUInzkGbambYbhiK2Mgh0tx_Ks/preview" width="640" height="480"></iframe>)
+![Walk-through] https://drive.google.com/file/d/1NtRMy8lUInzkGbambYbhiK2Mgh0tx_Ks/view
 
 ## Description
 This application allows a user to keep track of and update a list of employees.  Employees are assigned role and optional managers.  They are also assigned a salary.  This app allows a user to view different aspects of the employee instance as well as change, add and update previous instances.
