@@ -15,7 +15,7 @@ connection.connect((err) => {
     prompt();
 });
 
-  
+
 
 function prompt() {
     inquirer.prompt([
@@ -30,7 +30,8 @@ function prompt() {
                 "Update Employee",
                 "Add Employee?",
                 "Add Role?",
-                "Add Department?"
+                "Add Department?",
+                "EXIT"
             ]
         }
     ]).then(function (data) {
@@ -56,93 +57,113 @@ function prompt() {
             case "Add Department?":
                 addDepartment()
                 break;
+            default:
+                exit();
+
         }
     })
 }
 
 function viewEmployees() {
-    connection.query("SELECT * FROM employee", function(err, res) {
-      if (err) throw err;
-      console.table(res);
-      prompt();
+    connection.query("SELECT * FROM employee", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        prompt();
     });
 }
 
 
 function viewRoles() {
-    connection.query("SELECT * FROM role", function(err, res) {
-      if (err) throw err;
-      console.table(res);
-      prompt();
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        prompt();
     });
 }
 
 function viewDepartments() {
-    connection.query( "SELECT * FROM department", function(err, res) {
-      if (err) throw err;
-      console.table(res);
-      prompt();
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        prompt();
     });
 }
 function updateEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Which employee would you like to update?",
+            name: "empChoice"
+        },
 
+        {
+            type: "input",
+            message: "What do you want to update to?",
+            name: "replaceRole"
+        }
+    ]).then(function (data) {
+        connection.query('UPDATE employee SET role_id=? WHERE first_name= ?', [data.replaceRole, data.empChoice], function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            prompt();
+        });
+    });
 }
 
 function addRole() {
     inquirer.prompt([
-      {
-        type: "input",
-        message: "What's the name of the role?",
-        name: "newRole"
-      },
-      {
-        type: "input",
-        message: "What is the salary for this role?",
-        name: "newSalary"
-      },
-      {
-        type: "input",
-        message: "What is the department id number?",
-        name: "newDept"
-      }
-    ]).then(function(data) {
-      connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [data.newRole, data.newSalary, data.newDept], function(err, res) {
-        if (err) throw err;
-        console.table(res);
-        prompt();
-      });
+        {
+            type: "input",
+            message: "What's the name of the role?",
+            name: "newRole"
+        },
+        {
+            type: "input",
+            message: "What is the salary for this role?",
+            name: "newSalary"
+        },
+        {
+            type: "input",
+            message: "What is the department id number?",
+            name: "newDept"
+        }
+    ]).then(function (data) {
+        connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [data.newRole, data.newSalary, data.newDept], function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            prompt();
+        });
     });
 }
 
 function addEmployee() {
     inquirer.prompt([
-      {
-        type: "input",
-        message: "What's the first name of the employee?",
-        name: "fName"
-      },
-      {
-        type: "input",
-        message: "What's the last name of the employee?",
-        name: "lName"
-      },
-      {
-        type: "input",
-        message: "What is the employee's role id number?",
-        name: "roleID"
-      },
-      {
-        type: "input",
-        message: "What is the manager id number?",
-        name: "managerID"
-      }
-    ])
-    .then(function(data) {
-        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [data.fName, data.lName, data.roleID, data.managerID], function(err, res) {
-        if (err) throw err;
-        console.table(res);
-        prompt();
-      });
+        {
+            type: "input",
+            message: "What's the first name of the employee?",
+            name: "fName"
+        },
+        {
+            type: "input",
+            message: "What's the last name of the employee?",
+            name: "lName"
+        },
+        {
+            type: "input",
+            message: "What is the employee's role id number?",
+            name: "roleID"
+        },
+        {
+            type: "input",
+            message: "What is the manager id number?",
+            name: "managerID"
+        }
+    ]).then(function (data) {
+        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [data.fName, data.lName, data.roleID, data.managerID], function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            prompt();
+        });
     });
 }
 
@@ -151,12 +172,17 @@ function addDepartment() {
         type: "input",
         message: "What is the name of the department?",
         name: "newDept"
-    }).then(function(data){
-        connection.query("INSERT INTO department (name) VALUES (?)", [data.newDept] , function(err, res) {
+    }).then(function (data) {
+        connection.query("INSERT INTO department (name) VALUES (?)", [data.newDept], function (err, res) {
             if (err) throw err;
             console.table(res);
             prompt();
-    });
+        });
     });
 
+}
+
+function exit() {
+    connection.end();
+    process.exit();
 }
