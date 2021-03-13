@@ -1,21 +1,21 @@
-const inquirer = require("inquirer")
-const mysql = require("mysql")
-const cTable = require('console.table');
+const inquirer = require("inquirer");
+const mysql = require("mysql");
+const express = require("express");
+require('console.table');
 require('dotenv').config();
+const connection = require('./config/connection');
+const app = express();
+const PORT = process.env.PORT || 3005;
 
-const connection = mysql.createConnection({
-    host: "localhost",
-    port: 3301,
-    user: process.env.DB_USER,
-    name: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD
-});
 
-connection.connect(function (err) {
-    if (err) throw err
-    console.log("Connected as" + connection.threadId);
+
+connection.connect((err) => {
+    if (err) throw err;
+    app.listen(PORT, () => console.log('Now listening on port' + PORT));
     prompt();
 });
+
+  
 
 function prompt() {
     inquirer.prompt([
@@ -61,7 +61,11 @@ function prompt() {
 }
 
 function viewEmployees() {
-
+    connection.query("SELECT * FROM employee", function(err, res) {
+      if (err) throw err;
+      console.table(res);
+      prompt();
+    });
 }
 
 
@@ -77,12 +81,12 @@ function updateEmployee() {
 
 }
 
-function addEmployee() {
+function addRole() {
 
 }
 
-function addRole() {
-
+function addEmployee() {
+   
 }
 
 function addDepartment() {
